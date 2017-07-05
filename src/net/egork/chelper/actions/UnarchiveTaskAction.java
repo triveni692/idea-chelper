@@ -47,7 +47,7 @@ public class UnarchiveTaskAction extends AnAction {
             public void run() {
                 try {
                     for (VirtualFile taskFile : files) {
-						if ("task".equals(taskFile.getExtension())) {
+                    	if ("task".equals(taskFile.getExtension())) {
 							Task task = Task.loadTask(new InputReader(taskFile.getInputStream()));
 							VirtualFile baseDirectory = FileUtilities.getFile(project, task.location);
 							if (baseDirectory == null) {
@@ -128,6 +128,7 @@ public class UnarchiveTaskAction extends AnAction {
 							}
 							Utilities.createConfiguration(task, true, project);
 						}
+						FileUtilities.deleteFileIfExists(taskFile);
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);

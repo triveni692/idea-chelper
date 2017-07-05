@@ -1,6 +1,7 @@
 package net.egork.chelper.util;
 
 import com.intellij.ide.IdeView;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
@@ -17,6 +18,7 @@ import net.egork.chelper.task.TopCoderTask;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Properties;
 
 /**
@@ -181,6 +183,20 @@ public class FileUtilities {
 			}
 		});
 		return getFile(project, location);
+	}
+
+	public static boolean deleteFileIfExists(VirtualFile virtualFile) {
+		File file = new File(virtualFile.getPath());
+		boolean res = false;
+		try {
+			res = Files.deleteIfExists(file.toPath());
+			file = new File(virtualFile.getNameWithoutExtension() + ".java");
+			res &= Files.deleteIfExists(file.toPath());
+		} catch (IOException e) {
+			Messenger.publishMessage("Unable to delete file " + virtualFile.getPath(),
+				NotificationType.ERROR);
+		}
+		return res;
 	}
 
 	public static void synchronizeFile(VirtualFile file) {
