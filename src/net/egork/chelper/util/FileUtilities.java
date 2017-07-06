@@ -9,6 +9,7 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.egork.chelper.codegeneration.CodeGenerationUtilities;
@@ -190,7 +191,7 @@ public class FileUtilities {
 		boolean res = false;
 		try {
 			res = Files.deleteIfExists(file.toPath());
-			file = new File(virtualFile.getNameWithoutExtension() + ".java");
+			file = new File(StringUtil.trimExtensions(virtualFile.getPath()) + ".java");
 			res &= Files.deleteIfExists(file.toPath());
 		} catch (IOException e) {
 			Messenger.publishMessage("Unable to delete file " + virtualFile.getPath(),
